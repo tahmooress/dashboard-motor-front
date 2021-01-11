@@ -1,0 +1,88 @@
+* {
+    box-sizing: border-box;
+    margin :0;
+    padding: 0;
+}
+
+.calendar{
+    position: absolute;
+    display: flex;
+    flex-flow: column wrap;
+    width: 380px;
+    justify-content: center;
+    align-items: center;
+    border : 1px solid gray;
+    border-radius: 6px;
+    background-color: #feffed;
+    z-index: 10;
+}
+
+.week{
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    height: 60px;
+    background-color: #e6e6e6
+}
+
+.day{
+    width: 14.24%;
+    /* border : 1px solid gray; */
+    text-align: center;
+    vertical-align: middle;
+    line-height: 60px;
+}
+.cal-header {
+        display: flex;
+        flex-flow: row wrap;
+        width: 100%;
+        height: 30px;
+        background-color: #5ae097;
+        color : #636363;
+}
+.day-name{
+    width: 14.2%;
+    /* border : 1px solid gray; */
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+    padding: 0 3px;
+    /* border-top: none; */
+}
+.cal-controler{
+    display: flex;
+    width: 100%;
+    height: 60px;
+    flex-flow: row-reverse wrap;
+    justify-content: center;
+    align-items: center;
+    /* border : 1px solid gray;
+    border-bottom: none; */
+    background-color: #5ae097;
+    color : #636363;
+}
+.cal-controler > div {
+    width: 33.3%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 60px;
+    font-weight: bold;
+    font-size: 20px;
+}
+.friday{
+    color : red;
+}
+.selected{
+    background-color: pink;
+    border-radius: 2px;
+}
+.out_ofrange{
+    opacity: 0.3;
+}
+.arrow i{
+    padding:0 3px;
+}
+.arrow span{
+    padding:0 3px;
+}
