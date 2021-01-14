@@ -39,31 +39,33 @@ class Payables extends Component{
         if(!(this.state.from && this.state.select)){
             return
         }
-        let shop = ""
+        let shop = []
         let to = "";
         let from = new Date(this.state.from);
         if(!this.state.to){
             let today = new Date();
             to =  new Date(today.setDate(today.getDate() + 30));
+        }else{
+            to = new Date(this.state.to);
         }
         switch(this.state.select){
             case "shopA":
-                shop = "shop_a"
+                shop = ["shop_a"]
                 break
             case "shopB":
-                shop = "shop_b"
+                shop = ["shop_b"]
                 break
             case "shopC":
-                shop = "shop_c"
+                shop = ["shop_c"]
                 break
             case shop = "warehouse":
-                shop = "warehouse"   
+                shop = ["warehouse"]   
                 break
             default:
                 return    
         }
         
-        const URL = "http://localhost:8000/handle-unpay";
+        const URL = "http://localhost:8000/unpay-list";
         const option = {
             headers : {
                 'Content-Type': 'application/json',
@@ -71,7 +73,7 @@ class Payables extends Component{
             }
         }
         let filter = {
-            shop,
+            shops : shop,
             from,
             to
         }
@@ -90,10 +92,12 @@ class Payables extends Component{
             if(data.err){
                 throw new Error(data.err)
             }else{
-                this.setState({
-                    list : data.result,
-                    search :data.result,
-                })
+                if(data.result.length > 0){
+                    this.setState({
+                        list : data.result[0].list,
+                        search : data.result[0].list
+                    })
+                }
                 this.showRefs.current.className = "hide";
                 this.closeRefs.current.className = "filter";
             }
@@ -247,7 +251,7 @@ class Payables extends Component{
             }else{
                 let v = util.digitConvertor(e.target.value)
                 this.setState({
-                    search : this.state.list.filter(item => item.pelakNumber.indexOf(v) !== -1 || item.factorNumber.indexOf(v) !== -1 || item.customerLastName.indexOf(v) !== -1)
+                    search : this.state.list.filter(item => item.pelakNumber.indexOf(v) !== -1 || item.factorNumber.indexOf(v) !== -1 || item.customer.customerLastName.indexOf(v) !== -1)
                 })  
             }
         }

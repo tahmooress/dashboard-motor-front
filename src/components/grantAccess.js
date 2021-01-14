@@ -2,6 +2,45 @@ import React, { Component } from 'react';
 import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from '../store/actions';
+import { Fragment } from 'react';
+
+
+
+
+const AccessList = ({accessibility, accessHandle}) => {
+    let list = accessibility.map((elem, index) => {
+        let text = ""
+        switch (elem) {
+            case "shop_a":
+                text = "فروشگاه الف";
+                break;
+            case "shop_b":
+                text = "فروشگاه ب";
+                break
+            case "shop_c":
+                text = "فروشگاه ج";
+                break
+            case "warehouse":
+                text = "انبار";
+            default:
+                break;
+        }
+        return(
+            <div key = {index}>
+                <input type = "checkbox" onChange={accessHandle} value = {elem} name = {elem}  />
+                <span>{text}</span>
+            </div>
+        )
+    })
+    return(
+        <Fragment>
+            {list}
+        </Fragment>
+    )
+}
+
+
+
 class GrantAccess extends Component {
     constructor(props){
         super(props)
@@ -104,7 +143,7 @@ class GrantAccess extends Component {
             <div className="access-container">
                 <div className="checkbox-container" onMouseEnter={this.handleMouseIn} onMouseLeave={this.handleMouseOut} >
                     {hover}
-                    <div>
+                    {/* <div>
                         <input type="checkbox" onChange={this.accessHandle}  value="shop_a" name="shop_a" />
                         <span>فروشگاه الف</span>
                     </div>
@@ -119,7 +158,8 @@ class GrantAccess extends Component {
                     <div>
                        <input type="checkbox" onChange={this.accessHandle}  value="warehouse" name="warehouse" />
                         <span>انبار</span>
-                    </div>
+                    </div> */}
+                    <AccessList accessHandle = {this.accessHandle} accessibility = {this.props.accessibility} />
                 </div>
                 <div className="user-info-container">
                     <div>
@@ -145,7 +185,8 @@ class GrantAccess extends Component {
 
 const mapStateToProps = (state) =>{
     return {
-        token : state.user.token
+        token : state.user.token,
+        accessibility : state.user.accessibility
     }
 }
 const mapDispatchToProps = (dispatch) =>{

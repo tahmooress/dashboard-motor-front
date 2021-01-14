@@ -84,7 +84,7 @@ const reducer = (state = initialState, action ) => {
                 let shop = handleUnrec(action.payload.shop)
                 let recives = []
                 for(let d of action.payload.factor.debts){
-                    let r = new models.Recieve(action.payload.factor.factorNumber, action.payload.factor.pelakNumber, action.payload.factor.customer.customerName, action.payload.factor.customer.customerLastName, action.payload.factor.customer.mobile, d.price, d.date);
+                    let r = new models.Account(action.payload.factor.factorNumber, action.payload.factor.pelakNumber, action.payload.factor.customer.customerName, action.payload.factor.customer.customerLastName, action.payload.factor.customer.mobile, d.price, d.date);
                     recives.push(r);
                 }
                 newState[shop] = [...newState[shop], ...recives];
@@ -94,13 +94,13 @@ const reducer = (state = initialState, action ) => {
             console.log(action.payload, "from buy_factor");
             let target = handleInventory(action.payload.shop);
             console.log(target, newState[target],"target")
-            let newBuy = new models.NewBuy(action.payload.factor.factorNumber,action.payload.motor.pelakNumber, action.payload.motor.modelName, action.payload.motor.color)
+            let newBuy = new models.NewFactor(action.payload.factor.factorNumber,action.payload.motor.pelakNumber, action.payload.motor.modelName, action.payload.motor.color)
             newState[target] = [...newState[target], newBuy];
             if (action.payload.factor.debts.length > 0){
                 let shop = handleUnpay(action.payload.shop);
                 let pays = []
                 for(let d of action.payload.factor.debts){
-                    let p = new models.Pay(action.payload.factor.factorNumber, action.payload.motor.pelakNumber, action.payload.customer.customerName, action.payload.customer.customerLastName, action.payload.customer.mobile, d.price, d.date);
+                    let p = new models.Account(action.payload.factor.factorNumber, action.payload.motor.pelakNumber, action.payload.customer.customerName, action.payload.customer.customerLastName, action.payload.customer.mobile, d.price, d.date);
                     pays.push(p)
                 }
                 newState[shop] = [...newState[shop],...pays];
@@ -109,8 +109,8 @@ const reducer = (state = initialState, action ) => {
         case actions.UPDATE_RECEIVES:
             let ss = handleUnrec(action.payload.factor.shop);
             console.log(ss, "from reducer");
-            console.log(newState[ss].filter(item => item.factorNumber !== action.payload.factor.factorNumber && item.date !== action.payload.factor.date))
-            // newState[ss] = newState[ss].filter(item => item.factorNumber !== action.payload.factor.factorNumber && item.date !== action.payload.factor.date);
+            console.log(newState[ss].filter(item =>!(item.factorNumber === action.payload.factor.factorNumber && item.date === action.payload.factor.date)))
+            newState[ss] = newState[ss].filter(item =>!(item.factorNumber === action.payload.factor.factorNumber && item.date === action.payload.factor.date));
             break;
         case actions.UPDATE_PAYS:
             let tt = handleUnpay(action.payload.factor.shop);
@@ -118,29 +118,7 @@ const reducer = (state = initialState, action ) => {
             // newState[tt] = newState[tt].filter(item => item.factorNumber !== action.payload.factor.factorNumber && item.date !== action.payload.factor.date); 
             break
         case actions.USER_LOGOUT:
-            newState = {
-                user : {
-                    userName : "",
-                    token : "",
-                    accessibility : []
-                },
-                shopA : [],
-                shopB : [],
-                shopC : [],
-                wareHouse : [],
-                payablesA : [],
-                payablesB : [],
-                payablesC : [],
-                payablesWareHouse : [],
-                receivablesA : [],
-                receivablesB : [],
-                receivablesC : [],
-                receivablesWareHouse : [],
-                salesHistoryA: [],
-                salesHistoryB: [],
-                salesHistoryC: [],
-                salesHistoryWareHouse: []
-            }
+            newState = initialState;
             console.log(newState)
             break
         case actions.ADD_LIST:

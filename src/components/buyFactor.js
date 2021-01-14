@@ -77,9 +77,11 @@ class BuyFactor extends Component{
     handleSubmit = () =>{
         let iran = this.state.iranPelak + "-";
         let pelakNumber = iran + this.state.pelakNumber
-        let motor = new models.Motor(pelakNumber, this.state.bodyNumber, this.state.color, this.state.modelName, this.state.modelYear);
+        let m = new models.Motor(pelakNumber, this.state.bodyNumber, this.state.color, this.state.modelName, this.state.modelYear);
+        let motor = []
+        motor.push(m)
         let customer = new models.Customer(this.state.customerName, this.state.customerLastName, this.state.customerMobile, this.state.customerNationalCode);
-        let factor = new models.FactorB(this.state.factorNumber, motor, this.state.price, this.state.date, customer,this.state.debts, this.state.shop);
+        let factor = new models.Factor(this.state.factorNumber, motor, this.state.price, this.state.date, customer,this.state.debts, this.state.shop);
         console.log(factor,"factor is heteeeee")
         const URL = "http://localhost:8000/buy-factor";
         const option = {

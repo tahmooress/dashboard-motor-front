@@ -15,6 +15,7 @@ class SellFactor extends Component{
         this.state = {
             factorNumber : "",
             pelakNumber : "",
+            iranPelak : "",
             bodyNumber : "",
             color : "",
             modelName : "",
@@ -29,7 +30,7 @@ class SellFactor extends Component{
             totalPay : "",
             perMounth : "",
             firstPayDate : "",
-            demands : [],
+            debts : [],
             shop : "",
             rsdebts : [],
             showDebt : false,
@@ -93,18 +94,18 @@ class SellFactor extends Component{
         let fp = new Date(this.state.firstPayDate);
         let fd = `${fp.getFullYear()}-${fp.getMonth() +1}-${fp.getDate()}`
         let num = totalPay / perMountDigit;
-        let demands = [];
+        let debts = [];
         let rsdebts = [];
         for (let i=0; i< num; i++){
-            let c = new models.Demand(fp,this.state.perMounth)
-            let temp = new models.Demand(fd, this.state.perMounth)
-            demands.push(temp);
+            let c = new models.Debt(fp,this.state.perMounth)
+            let temp = new models.Debt(fd, this.state.perMounth)
+            debts.push(temp);
             rsdebts.push(c);
             fp = new Date(fp.setDate(fp.getDate() + limit));
             fd = `${fp.getFullYear()}-${fp.getMonth() + 1}-${fp.getDate()}`
         }
         this.setState({
-            demands,
+            debts,
             rsdebts,
             showDebt : true
         })
@@ -138,8 +139,12 @@ class SellFactor extends Component{
         if (!this.state.shop) {
             return
         }
-        let buyer = new models.Buyer(this.state.buyerName, this.state.buyerLastName, this.state.buyerMobile, this.state.buyerNationalCode);
-        let factor = new models.FactorS(this.state.factorNumber, this.state.pelakNumber, this.state.price, this.state.date, buyer, this.state.demands, this.state.shop);
+        let pelakNumber = this.state.iranPelak + "-" + this.state.pelakNumber;
+        let buyer = new models.Customer(this.state.buyerName, this.state.buyerLastName, this.state.buyerMobile, this.state.buyerNationalCode);
+        let m = new models.Motor(pelakNumber, this.state.bodyNumber, this.state.color, this.state.modelName, this.state.modelYear);
+        let motor = []
+        motor.push(m)
+        let factor = new models.Factor(this.state.factorNumber, motor, this.state.price, this.state.date, buyer, this.state.debts, this.state.shop);
         axios.post(URL, JSON.stringify(factor), option)
         .then(response =>{
             if(response.status === 200){
@@ -168,7 +173,7 @@ class SellFactor extends Component{
     }
     render(){
         console.log("sell factor state : ", this.state)
-        let result = this.state.demands.length > 0 && this.state.showDebt ? <Result debts={this.state.rsdebts} handleToggle={this.handleToggle} /> : null
+        let result = this.state.debts.length > 0 && this.state.showDebt ? <Result debts={this.state.rsdebts} handleToggle={this.handleToggle} /> : null
         return(
             <div className="factor_container">
                 <div className="factor-select">
@@ -220,7 +225,7 @@ const mapDispatchToProps = (dispatch) =>{
             factor : data.factor,
             // motor : data.motor,
             shop : data.shop,
-            // demands : data.demands
+            // debts : data.debts
         } }),
         onExit : () => dispatch({type : actions.USER_LOGOUT, payload : {}})
     }

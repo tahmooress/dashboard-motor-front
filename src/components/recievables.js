@@ -39,31 +39,33 @@ class Recievables extends Component{
         if(!(this.state.from && this.state.select)){
             return
         }
-        let shop = ""
+        let shop = []
         let to = "";
         let from = new Date(this.state.from);
         if(!this.state.to){
             let today = new Date();
             to =  new Date(today.setDate(today.getDate() + 30));
+        }else{
+            to = new Date(this.state.to)
         }
         switch(this.state.select){
             case "shopA":
-                shop = "shop_a"
+                shop = ["shop_a"]
                 break
             case "shopB":
-                shop = "shop_b"
+                shop = ["shop_b"]
                 break
             case "shopC":
-                shop = "shop_c"
+                shop = ["shop_c"]
                 break
             case shop = "warehouse":
-                shop = "warehouse"   
+                shop = ["warehouse"]   
                 break
             default:
                 return    
         }
         
-        const URL = "http://localhost:8000/handle-unrec";
+        const URL = "http://localhost:8000/unrec-list";
         const option = {
             headers : {
                 'Content-Type': 'application/json',
@@ -71,10 +73,11 @@ class Recievables extends Component{
             }
         }
         let filter = {
-            shop,
+            shops : shop,
             from,
             to
         }
+        console.log(filter, "from filter recieves")
         axios.post(URL, JSON.stringify(filter), option)
         .then(response =>{
             if(response.status === 200){
@@ -90,14 +93,16 @@ class Recievables extends Component{
             if(data.err){
                 throw new Error(data.err)
             }else{
-                this.setState({
-                    list : data.result,
-                    search :data.result,
-                })
+                if (data.result){
+                    this.setState({
+                        list : data.result[0].list,
+                        search : data.result[0].list
+                    })
+                }
                 this.showRefs.current.className = "hide";
                 this.closeRefs.current.className = "filter";
             }
-        }).catch(err => alert(err))
+        }).catch(err => alert(`handle filter From receivables: ${err}`))
     }
     handleToggleTrue(){
         this.setState({
@@ -125,6 +130,7 @@ class Recievables extends Component{
         })
     }
     handlePart(factor, amount){
+        console.log(factor, amount, "from berooz resany")
         let shop = "";
         switch(this.state.select){
             case "shopA":
@@ -142,8 +148,10 @@ class Recievables extends Component{
             default:
                 return    
         }
+        let price = factor.price - amount
+        factor.price = String(price)
         factor = {...factor, shop};
-        const URL = "http://localhost:8000/receive-part";
+        const URL = "http://localhost:8000/partyl-pay";
         const option = {
             headers : {
                 'Content-Type': 'application/json',
@@ -186,7 +194,7 @@ class Recievables extends Component{
         }
     }
     handleUpdate(factor){
-        console.log(factor)
+        console.log(factor, "from factor update")
         let shop = "";
         switch(this.state.select){
             case "shopA":
@@ -233,14 +241,15 @@ class Recievables extends Component{
                 this.handleShop(this.state.select)
             }
         })
-        .then(res => {
-            if(res){
-                this.setState({
-                    list : this.props.accounts[this.state.select],
-                    serach : this.props.accounts[this.state.select]
-                })
-            }
-        })
+        // .then(res => {
+        //     console.log("fro res to check refresh")
+        //     if(res){
+        //         this.setState({
+        //             list : this.props.accounts[this.state.select],
+        //             serach : this.props.accounts[this.state.select]
+        //         })
+        //     }
+        // })
         .catch(err => alert(err))
     }
     handleSearch(e){
@@ -252,7 +261,7 @@ class Recievables extends Component{
             }else{
                 let v = util.digitConvertor(e.target.value);
                 this.setState({
-                    search : this.state.list.filter(item => item.pelakNumber.indexOf(v) !== -1 || item.factorNumber.indexOf(v) !== -1 || item.buyerLastName.indexOf(v) !== -1)
+                    search : this.state.list.filter(item => item.pelakNumber.indexOf(v) !== -1 || item.factorNumber.indexOf(v) !== -1 || item.customer.customerLastName.indexOf(v) !== -1)
                 })  
             }
         }

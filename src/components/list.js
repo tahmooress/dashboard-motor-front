@@ -12,9 +12,11 @@ class BuyList extends Component{
         super(props)
         this.state = {
             select : "",
+            factorNumber : "",
             date : "",
-            provider : "",
-            amount : "",
+            csutomerLastName : "",
+            customerName : "provider",
+            price : "",
             toggle : false,
             pelakNumber : "",
             iranPelak : "",
@@ -35,7 +37,7 @@ class BuyList extends Component{
         this.handleAddToStore = this.handleAddToStore.bind(this);
     }
     handleAddToStore(){
-        const URL = "http://localhost:8000/entry-list";
+        const URL = "http://localhost:8000/buy-factor";
         const option = {
             headers : {
                 'Content-Type': 'application/json',
@@ -59,13 +61,9 @@ class BuyList extends Component{
             default:
                 break;
         }
-        let list = {
-            provider : this.state.provider,
-            date : this.state.date,
-            amount : this.state.amount,
-            motors : this.state.motors,
-            shop : shop
-            }
+        let customer = new models.Customer(this.state.customerName, this.state.csutomerLastName, "000")
+        let list = new models.Factor(this.state.factorNumber, this.state.motors, this.state.price, this.state.date, customer, [] ,shop)
+        let entryList = this.state.motors.map(m => new models.NewFactor(this.state.factorNumber, m.pelakNumber, m.modelName, m.color))
         axios.post(URL, JSON.stringify(list), option)
         .then(response =>{
             if(response.status === 200){
@@ -81,7 +79,7 @@ class BuyList extends Component{
             if(data.err){
                 throw new Error(data.err)
             }else{
-                this.props.AddToList(list.motors, this.state.select)
+                this.props.AddToList(entryList, this.state.select)
                 alert(data.result)
                 this.setState({
                     motors : []
@@ -172,10 +170,13 @@ class BuyList extends Component{
                 <div className="text-provider"> <h4>فروشگاه صادر کننده و تاریخ صدور فاکتور را انتخاب کنید</h4></div>
                 <div className="add-header">
                     <div>
-                        <input name="provider" type="text" placeholder="تامیین کننده" onChange={this.handleChange} value = {this.state.provider} />
+                        <input name="csutomerLastName" type="text" placeholder="تامیین کننده" onChange={this.handleChange} value = {this.state.provider} />
                     </div>
                     <div>
-                        <input name="amount" type="text" placeholder="مبلغ کل" onChange={this.handleChange} value = {this.state.amount} />
+                        <input name="factorNumber" type="text" placeholder="شماره فاکتور" onChange={this.handleChange} value = {this.state.factorNumber} />
+                    </div>
+                    <div>
+                        <input name="price" type="text" placeholder="مبلغ کل" onChange={this.handleChange} value = {this.state.price} />
                     </div>
                 </div>
                 <div className="add-form">

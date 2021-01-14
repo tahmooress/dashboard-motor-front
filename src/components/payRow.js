@@ -48,9 +48,9 @@ class PayRow extends Component{
         return(
             <div className="accounts-row" >
                 <div className="item-row">
-                    <div>نام: {data.customerName}</div>
-                    <div>نام خانوادگی: {data.customerLastName}</div>
-                    <div>موبایل: {data.mobile}</div>
+                    <div>نام: {data.customer.customerName}</div>
+                    <div>نام خانوادگی: {data.customer.customerLastName}</div>
+                    <div>موبایل: {data.customer.customerMobile}</div>
                 </div>
                 <div className="item-row">
                     <div >شماره فاکتور: {data.factorNumber}</div>

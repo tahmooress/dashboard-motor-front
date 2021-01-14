@@ -11,27 +11,28 @@ export class SellHistory{
     }
 }
 
-export class Buyer{
-    constructor(buyerName, buyerLastName, buyerMobile, buyerNationalCode){
-        this.buyerName = buyerName;
-        this.buyerLastName = buyerLastName;
-        this.buyerMobile = buyerMobile;
-        this.buyerNationalCode = buyerNationalCode;
-    }
-}
+// export class Buyer{
+//     constructor(buyerName, buyerLastName, buyerMobile, buyerNationalCode){
+//         this.buyerName = buyerName;
+//         this.buyerLastName = buyerLastName;
+//         this.buyerMobile = buyerMobile;
+//         this.buyerNationalCode = buyerNationalCode;
+//     }
+// }
 
-export  class FactorS{
-    constructor(factorNumber, pelakNumber, price, date, buyer, demands, shop){
-        this.factorNumber = factorNumber;
-        this.pelakNumber = pelakNumber;
-        this.price = price;
-        this.date = date;
-        this.buyer = buyer;
-        this.demands = demands;
-        this.shop = shop;
-    }
-}
-export class FactorB{
+// export  class FactorS{
+//     constructor(factorNumber, pelakNumber, price, date, buyer, demands, shop){
+//         this.factorNumber = factorNumber;
+//         this.pelakNumber = pelakNumber;
+//         this.price = price;
+//         this.date = date;
+//         this.buyer = buyer;
+//         this.demands = demands;
+//         this.shop = shop;
+//     }
+// }
+
+export class Factor{
     constructor(factorNumber, motor, price, date, customer, debts, shop){
         this.factorNumber = factorNumber;
         this.motor = motor;
@@ -50,7 +51,6 @@ export class Motor{
         this.color = color;
         this.modelName = modelName;
         this.modelYear = modelYear;
-        this.listID = listID;
     }
 }
 
@@ -83,50 +83,49 @@ export class Customer{
     }
 }
 
-export class Sale{
-    constructor(factorNumber, pelakNumber, color, price, date, modelName){
-        this.factorNumber = factorNumber;
-        this.pelakNumber = pelakNumber;
-        this.color = color;
-        this.price = price;
-        this.date = date;
-        this.modelName = modelName;
-    }
-}
+// export class Sale{
+//     constructor(factorNumber, pelakNumber, color, price, date, modelName){
+//         this.factorNumber = factorNumber;
+//         this.pelakNumber = pelakNumber;
+//         this.color = color;
+//         this.price = price;
+//         this.date = date;
+//         this.modelName = modelName;
+//     }
+// }
 
-export class NewBuy{
-    constructor(buyFactor, pelakNumber, modelName, color){
-        this.buyFactor = buyFactor;
+export class NewFactor{
+    constructor(factorNumber, pelakNumber, modelName, color){
+        this.factorNumber = factorNumber;
         this.pelakNumber = pelakNumber;
         this.modelName = modelName;
         this.color = color
     }
-
 }
 
-export class Pay{
-    constructor(factorNumber, pelakNumber, customerName, customerLastName, mobile, price, date){
+export class Account{
+    constructor(factorNumber, pelakNumber, customerName, customerLastName, customerMobile, price, date){
         this.factorNumber = factorNumber;
         this.pelakNumber = pelakNumber;
         this.customerName = customerName;
         this.customerLastName = customerLastName;
-        this.mobile = mobile;
+        this.customerMobile = customerMobile;
         this.price = price;
         this.date = date;
     }
 }
 
-export class Recieve{
-    constructor(factorNumber, pelakNumber, buyerName, buyerLastName, mobile, price, date){
-        this.factorNumber = factorNumber;
-        this.pelakNumber = pelakNumber;
-        this.buyerName = buyerName;
-        this.buyFactor = buyerLastName;
-        this.mobile = mobile;
-        this.price = price;
-        this.date = date;
-    }
-}
+// export class Recieve{
+// //     constructor(factorNumber, pelakNumber, buyerName, buyerLastName, mobile, price, date){
+// //         this.factorNumber = factorNumber;
+// //         this.pelakNumber = pelakNumber;
+// //         this.customerName = customerName;
+// //         this.customerLastName = customerLastName;
+// //         this.customerMobile = customerMobile;
+// //         this.price = price;
+// //         this.date = date;
+// //     }
+// // }
 
 export class HistoryFilter{
     constructor(from, to, shops){

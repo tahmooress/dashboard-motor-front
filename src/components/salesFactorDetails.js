@@ -43,7 +43,7 @@ class SalesFactorDetails extends Component{
         console.log(recievShop, historyShop, inventory)
         let receivables = this.props.store[recievShop].filter(r => r.pelakNumber === pelakNumber);
         let saleHistory = this.props.store[historyShop].filter( s => s.pelakNumber === pelakNumber);
-        let buyer = new models.Buyer(receivables[0].buyerName, receivables[0].buyerLastName, receivables[0].mobile);
+        let buyer = new models.Customer(receivables[0].buyerName, receivables[0].buyerLastName, receivables[0].mobile);
         console.log("buyer is :", receivables.buyerName, receivables.buyerLastNamem, receivables.mobile);
         let motor = new models.Motor(pelakNumber, null, saleHistory[0].color, saleHistory[0].modelName);
         //calculating total debts:

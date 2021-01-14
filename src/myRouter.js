@@ -38,18 +38,18 @@ class MyRouter extends Component{
         const URL_SALES = "http://localhost:8000/sales-history";
         const URL_REC = "http://localhost:8000/unrec-list";
         const URL_Pay = "http://localhost:8000/unpay-list";
-        let to = new Date();
         let today = new Date()
         let from = new Date(today.setDate(today.getDate() - 30));
-        const SalesData = {
+        let to = new Date(today.setDate(today.getDate() + 150))
+        const filter = {
             shops : this.props.accessibility,
             from : from.toISOString().toString(),
             to : to.toISOString().toString()
         }
         const reqStock = axios.post(URL_STOCK, JSON.stringify({shops : this.props.accessibility}), option);
-        const reqSales = axios.post(URL_SALES, JSON.stringify(SalesData), option);
-        const reqRec = axios.post(URL_REC,JSON.stringify({shops : this.props.accessibility}) , option);
-        const reqPay = axios.post(URL_Pay, JSON.stringify({ shops : this.props.accessibility}), option);
+        const reqSales = axios.post(URL_SALES, JSON.stringify(filter), option);
+        const reqRec = axios.post(URL_REC,JSON.stringify(filter) , option);
+        const reqPay = axios.post(URL_Pay, JSON.stringify(filter), option);
         axios.all([reqStock, reqSales, reqRec, reqPay]).then(axios.spread((...responses)=> responses)).then(responses =>{
             var data = [];
             for (let i=0; i < responses.length; i++){
